@@ -2,7 +2,7 @@
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[scss]": {
+  "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.configPath": ".prettierrc"
