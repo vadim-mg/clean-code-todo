@@ -1,12 +1,12 @@
 const newTaskInput = document.getElementById('new-task');
 const addButton = document.getElementsByTagName('button')[0]; //first button
-const incompleteTaskHolder = document.getElementById('incompleteTasks'); //ul of #incompleteTasks
-const completedTasksHolder = document.getElementById('completed-tasks'); //completed-tasks
+const incompleteTasks = document.getElementById('incomplete-tasks');
+const completedTasks = document.getElementById('completed-tasks');
 
 //Mark task completed
 const toggleTask = function (taskItem) {
   const isCompleted = taskItem.querySelector('input[type=checkbox]')?.checked ?? false;
-  (isCompleted ? completedTasksHolder : incompleteTaskHolder).appendChild(taskItem);
+  (isCompleted ? completedTasks : incompleteTasks).appendChild(taskItem);
 };
 
 const editTask = function (taskItem) {
@@ -87,13 +87,13 @@ const createNewTaskElement = function (taskString) {
 const addTask = function () {
   if (!newTaskInput.value) return;
   const listItem = createNewTaskElement(newTaskInput.value);
-  incompleteTaskHolder.appendChild(listItem);
+  incompleteTasks.appendChild(listItem);
   listItem.addEventListener('click', taskClickHandler);
   newTaskInput.value = '';
 };
 
 addButton.addEventListener('click', addTask);
 
-for (const taskListItem of [...incompleteTaskHolder.children, ...completedTasksHolder.children]) {
+for (const taskListItem of [...incompleteTasks.children, ...completedTasks.children]) {
   taskListItem.addEventListener('click', taskClickHandler);
 }
