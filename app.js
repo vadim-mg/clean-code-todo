@@ -39,16 +39,15 @@
     const editInput = taskItem.querySelector(SELECTORS.editInput);
     const editLabel = taskItem.querySelector(SELECTORS.editLabel);
     const editButton = taskItem.querySelector(SELECTORS.editButton);
-    const containsClass = taskItem.classList.contains(EDIT_MODE_CLASS);
-    if (containsClass) {
-      editLabel.innerText = editInput.value;
-      editButton.innerText = 'Edit';
-    } else {
-      editInput.value = editLabel.innerText;
-      editButton.innerText = 'Save';
+    if (taskItem.classList.contains(EDIT_MODE_CLASS)) {
+      editLabel.textContent = editInput.value;
+      editButton.textContent = 'Edit';
+      taskItem.classList.remove(EDIT_MODE_CLASS);
+      return;
     }
-
-    taskItem.classList.toggle(EDIT_MODE_CLASS);
+    editInput.value = editLabel.textContent;
+    editButton.textContent = 'Save';
+    taskItem.classList.add(EDIT_MODE_CLASS);
   };
 
   const deleteTask = function (taskItem) {
