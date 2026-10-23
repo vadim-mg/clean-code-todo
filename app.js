@@ -1,5 +1,3 @@
-const newTaskInput = document.getElementById('new-task');
-const addButton = document.getElementsByTagName('button')[0]; //first button
 const incompleteTasks = document.getElementById('incomplete-tasks');
 const completedTasks = document.getElementById('completed-tasks');
 
@@ -83,13 +81,16 @@ const createNewTaskElement = function (taskString) {
 };
 
 const addTask = function () {
+  const newTaskInput = document.getElementById('new-task-input');
   if (!newTaskInput.value) return;
-  const listItem = createNewTaskElement(newTaskInput.value);
-  incompleteTasks.appendChild(listItem);
-  listItem.addEventListener('click', taskClickHandler);
+
+  const taskElement = createNewTaskElement(newTaskInput.value);
+  incompleteTasks.appendChild(taskElement);
+  taskElement.addEventListener('click', taskClickHandler);
   newTaskInput.value = '';
 };
 
+const addButton = document.getElementById('add-task-btn');
 addButton.addEventListener('click', addTask);
 
 for (const taskItem of [...incompleteTasks.children, ...completedTasks.children]) {
