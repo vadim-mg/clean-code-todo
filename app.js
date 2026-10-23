@@ -46,37 +46,26 @@ const taskClickHandler = function (event) {
   }
 };
 
-const createNewTaskElement = function (taskString) {
-  const taskItem = document.createElement('li');
+const createEl = (tag, props = {}) => Object.assign(document.createElement(tag), props);
 
-  const checkBox = document.createElement('input');
-  const label = document.createElement('label');
-  const editInput = document.createElement('input');
-  const editButton = document.createElement('button');
+const createNewTaskElement = function (taskDescription) {
+  const taskItem = createEl('li');
 
-  const deleteButton = document.createElement('button');
-  const deleteButtonImg = document.createElement('img');
+  const checkBox = createEl('input', { type: 'checkbox' });
 
-  label.innerText = taskString;
-  label.className = 'task';
+  const editLabel = createEl('label', { className: 'task', innerText: taskDescription });
 
-  //Each elements, needs appending
-  checkBox.type = 'checkbox';
-  editInput.type = 'text';
-  editInput.className = 'task';
+  const editInput = createEl('input', { className: 'task', type: 'text' });
 
-  editButton.innerText = 'Edit';
-  editButton.className = 'edit';
+  const editButton = createEl('button', { className: 'edit', innerText: 'Edit' });
 
-  deleteButton.className = 'delete';
-  deleteButtonImg.src = './remove.svg';
-  deleteButton.appendChild(deleteButtonImg);
+  const deleteButton = createEl('button', { className: 'delete' });
 
-  taskItem.appendChild(checkBox);
-  taskItem.appendChild(label);
-  taskItem.appendChild(editInput);
-  taskItem.appendChild(editButton);
-  taskItem.appendChild(deleteButton);
+  const deleteImg = createEl('img', { src: './remove.svg', alt: 'Delete' });
+  deleteButton.appendChild(deleteImg);
+
+  taskItem.append(checkBox, editLabel, editInput, editButton, deleteButton);
+
   return taskItem;
 };
 
