@@ -1,8 +1,4 @@
 (() => {
-  const EDIT_MODE_CLASS = 'editMode';
-  const NEW_TASK_INPUT_ID = 'new-task-input';
-  const ADD_TASK_BUTTON_ID = 'add-task-btn';
-
   const TAG_NAMES = {
     listItem: 'li',
     label: 'label',
@@ -15,9 +11,12 @@
     task: 'task',
     editButton: 'edit',
     deleteButton: 'delete',
+    editMode: 'editMode',
   };
 
   const SELECTORS = {
+    newTaskInput: `#new-task-input`,
+    addTaskButton: `#add-task-btn`,
     incompleteTasks: '#incomplete-tasks',
     completedTasks: '#completed-tasks',
     checkBox: 'input[type=checkbox]',
@@ -39,15 +38,15 @@
     const editInput = taskItem.querySelector(SELECTORS.editInput);
     const editLabel = taskItem.querySelector(SELECTORS.editLabel);
     const editButton = taskItem.querySelector(SELECTORS.editButton);
-    if (taskItem.classList.contains(EDIT_MODE_CLASS)) {
+    if (taskItem.classList.contains(CLASS_NAMES.editMode)) {
       editLabel.textContent = editInput.value;
       editButton.textContent = 'Edit';
-      taskItem.classList.remove(EDIT_MODE_CLASS);
+      taskItem.classList.remove(CLASS_NAMES.editMode);
       return;
     }
     editInput.value = editLabel.textContent;
     editButton.textContent = 'Save';
-    taskItem.classList.add(EDIT_MODE_CLASS);
+    taskItem.classList.add(CLASS_NAMES.editMode);
   };
 
   const deleteTask = function (taskItem) {
@@ -98,7 +97,7 @@
   };
 
   const addTask = function () {
-    const newTaskInput = document.getElementById(NEW_TASK_INPUT_ID);
+    const newTaskInput = document.querySelector(SELECTORS.newTaskInput);
     if (!newTaskInput.value) return;
 
     const taskElement = createNewTaskElement(newTaskInput.value);
@@ -107,7 +106,7 @@
     newTaskInput.value = '';
   };
 
-  const addButton = document.getElementById(ADD_TASK_BUTTON_ID);
+  const addButton = document.querySelector(SELECTORS.addTaskButton);
   addButton.addEventListener('click', addTask);
 
   for (const taskItem of [...incompleteTasks.children, ...completedTasks.children]) {
