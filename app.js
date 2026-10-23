@@ -1,39 +1,34 @@
 (() => {
-  const EDIT_MODE_CLASS = 'editMode';
-  const NEW_TASK_INPUT_ID = 'new-task-input';
-  const ADD_TASK_BUTTON_ID = 'add-task-btn';
-
-  const ELEMENTS = {
+  const TAG_NAMES = {
     listItem: 'li',
-    editLabel: 'label',
-    editInput: 'input',
-    editButton: 'button',
-    deleteButton: 'button',
-    deleteImg: 'img',
+    label: 'label',
+    input: 'input',
+    button: 'button',
+    image: 'img',
   };
 
-  const CLASSES = {
-    editLabel: 'task',
-    editInput: 'task',
+  const CLASS_NAMES = {
+    task: 'task',
     editButton: 'edit',
     deleteButton: 'delete',
+    editMode: 'editMode',
   };
 
   const SELECTORS = {
-    incompleteTasks: 'incomplete-tasks',
-    completedTasks: 'completed-tasks',
+    newTaskInput: `#new-task-input`,
+    addTaskButton: `#add-task-btn`,
+    incompleteTasks: '#incomplete-tasks',
+    completedTasks: '#completed-tasks',
     checkBox: 'input[type=checkbox]',
     editInput: 'input[type=text]',
-    editLabel: `${ELEMENTS.editLabel}.${CLASSES.editLabel}`,
-    editButton: `${ELEMENTS.editButton}.${CLASSES.editButton}`,
-    deleteButton: `${ELEMENTS.deleteButton}.${CLASSES.deleteButton}`,
-    taskListItem: 'li',
+    editLabel: `label.${CLASS_NAMES.task}`,
+    editButton: `button.${CLASS_NAMES.editButton}`,
+    deleteButton: `button.${CLASS_NAMES.deleteButton}`,
   };
 
-  const incompleteTasks = document.getElementById(SELECTORS.incompleteTasks);
-  const completedTasks = document.getElementById(SELECTORS.completedTasks);
+  const incompleteTasks = document.querySelector(SELECTORS.incompleteTasks);
+  const completedTasks = document.querySelector(SELECTORS.completedTasks);
 
-  //Mark task completed
   const toggleTask = function (taskItem) {
     const isCompleted = taskItem.querySelector(SELECTORS.checkBox)?.checked ?? false;
     (isCompleted ? completedTasks : incompleteTasks).appendChild(taskItem);
@@ -43,15 +38,15 @@
     const editInput = taskItem.querySelector(SELECTORS.editInput);
     const editLabel = taskItem.querySelector(SELECTORS.editLabel);
     const editButton = taskItem.querySelector(SELECTORS.editButton);
-    if (taskItem.classList.contains(EDIT_MODE_CLASS)) {
+    if (taskItem.classList.contains(CLASS_NAMES.editMode)) {
       editLabel.textContent = editInput.value;
       editButton.textContent = 'Edit';
-      taskItem.classList.remove(EDIT_MODE_CLASS);
+      taskItem.classList.remove(CLASS_NAMES.editMode);
       return;
     }
     editInput.value = editLabel.textContent;
     editButton.textContent = 'Save';
-    taskItem.classList.add(EDIT_MODE_CLASS);
+    taskItem.classList.add(CLASS_NAMES.editMode);
   };
 
   const deleteTask = function (taskItem) {
@@ -60,55 +55,49 @@
 
   const taskClickHandler = function (event) {
     const clickedElement = event.target;
-    const taskListItem = event.target.closest(SELECTORS.taskListItem);
+    const taskItem = event.target.closest(TAG_NAMES.listItem);
 
     if (clickedElement.closest(SELECTORS.deleteButton)) {
-      deleteTask(taskListItem);
+      deleteTask(taskItem);
       return;
     }
 
     if (clickedElement.closest(SELECTORS.editButton)) {
-      editTask(taskListItem);
+      editTask(taskItem);
       return;
     }
 
     if (clickedElement.closest(SELECTORS.checkBox)) {
-      toggleTask(taskListItem);
+      toggleTask(taskItem);
       return;
     }
   };
 
-  /**
-   * creare element with props
-   * @param {string} tag
-   * @param {object} props
-   * @returns
-   */
   const createEl = (tag, props = {}) => Object.assign(document.createElement(tag), props);
 
-  //New task list item
   const createNewTaskElement = function (taskDescription) {
-    const listItem = createEl(ELEMENTS.listItem);
+    const taskItem = createEl(TAG_NAMES.listItem);
 
-    const checkBox = createEl(ELEMENTS.editInput, { type: 'checkbox' });
+    const checkBox = createEl(TAG_NAMES.input, { type: 'checkbox' });
 
-    const editLabel = createEl(ELEMENTS.editLabel, { className: CLASSES.editLabel, innerText: taskDescription });
+    const editLabel = createEl(TAG_NAMES.label, { className: CLASS_NAMES.task, innerText: taskDescription });
 
-    const editInput = createEl(ELEMENTS.editInput, { className: CLASSES.editInput, type: 'text' });
+    const editInput = createEl(TAG_NAMES.input, { className: CLASS_NAMES.task, type: 'text' });
 
-    const editButton = createEl(ELEMENTS.editButton, { className: CLASSES.editButton, innerText: 'Edit' });
+    const editButton = createEl(TAG_NAMES.button, { className: CLASS_NAMES.editButton, innerText: 'Edit' });
 
-    const deleteButton = createEl(ELEMENTS.deleteButton, { className: CLASSES.deleteButton, innerText: 'Edit' });
-    const deleteImg = createEl(ELEMENTS.deleteImg, { src: './remove.svg', alt: 'Delete' });
+    const deleteButton = createEl(TAG_NAMES.button, { className: CLASS_NAMES.deleteButton });
+
+    const deleteImg = createEl(TAG_NAMES.image, { src: './remove.svg', alt: 'Delete' });
     deleteButton.appendChild(deleteImg);
 
-    listItem.append(checkBox, editLabel, editInput, editButton, deleteButton);
+    taskItem.append(checkBox, editLabel, editInput, editButton, deleteButton);
 
-    return listItem;
+    return taskItem;
   };
 
   const addTask = function () {
-    const newTaskInput = document.getElementById(NEW_TASK_INPUT_ID);
+    const newTaskInput = document.querySelector(SELECTORS.newTaskInput);
     if (!newTaskInput.value) return;
 
     const taskElement = createNewTaskElement(newTaskInput.value);
@@ -117,10 +106,10 @@
     newTaskInput.value = '';
   };
 
-  const addButton = document.getElementById(ADD_TASK_BUTTON_ID);
+  const addButton = document.querySelector(SELECTORS.addTaskButton);
   addButton.addEventListener('click', addTask);
 
-  for (const taskListItem of [...incompleteTasks.children, ...completedTasks.children]) {
-    taskListItem.addEventListener('click', taskClickHandler);
+  for (const taskItem of [...incompleteTasks.children, ...completedTasks.children]) {
+    taskItem.addEventListener('click', taskClickHandler);
   }
 })();
