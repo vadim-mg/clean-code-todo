@@ -98,7 +98,8 @@
 
     const editButton = createEl(ELEMENTS.editButton, { className: CLASSES.editButton, innerText: 'Edit' });
 
-    const deleteButton = createEl(ELEMENTS.deleteButton, { className: CLASSES.deleteButton, innerText: 'Edit' });
+    const deleteButton = createEl(ELEMENTS.deleteButton, { className: CLASSES.deleteButton });
+
     const deleteImg = createEl(ELEMENTS.deleteImg, { src: './remove.svg', alt: 'Delete' });
     deleteButton.appendChild(deleteImg);
 
